@@ -1,4 +1,4 @@
-debug = false
+-- debug = false
 
 GM.Name 	= "Melonracer 1.3"
 GM.Author 	= "Robbis_1, Valkyrie"
@@ -33,16 +33,16 @@ GM.Powerups = GM.Powerups or {}
 GM.Powerups.Entities = GM.Powerups.Entities or {}
 
 -- MUST contain all names of all powerups below (in correct order)
-GM.Powerups.Names = 
+GM.Powerups.Names =
 	{
-		"Bomb", 
-		"Haste", 
-		"God", 
-		"LessTime", 
-		"Drug", 
-		"TimedBomb", 
-		"Slow", 
-		"Weak", 
+		"Bomb",
+		"Haste",
+		"God",
+		"LessTime",
+		"Drug",
+		"TimedBomb",
+		"Slow",
+		"Weak",
 		"MoreTime"
 	}
 
@@ -114,7 +114,7 @@ team.SetUp(100, "Melonracers", Color(100, 255, 100, 255))
 
 -- Some debug printing functions --
 function dprint(...)
-	if (debug) then
+	if GetConVar("developer"):GetBool() then
 		if (SERVER) then
 			print("SRV: ", unpack(arg))
 		elseif (CLIENT) then
@@ -124,7 +124,7 @@ function dprint(...)
 end
 
 function dPrintTable(t)
-	if (debug) then
+	if GetConVar("developer"):GetBool() then
 		PrintTable(t)
 	end
 end

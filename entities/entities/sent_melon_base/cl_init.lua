@@ -1,4 +1,4 @@
-include('shared.lua')
+include("shared.lua")
 
 local matBomb = Material("effects/redflare")
 
@@ -16,15 +16,15 @@ function ENT:Draw()
 		self.BombDuration = CurTime() + 0.15
 		self.BombTimerLast = self.BombTimer
 	end
-	
+
 	-- Apply bomb effect
 	if (self.BombDuration > CurTime()) then
 		render.SetMaterial(matBomb)
-		render.DrawSprite(self.Entity:GetPos(), 64, 64, Color(255, 255, 255, 255))
+		render.DrawSprite(self:GetPos(), 64, 64, Color(255, 255, 255, 255))
 	end
-	
+
 	-- Draw model
-	self.Entity:DrawModel()
+	self:DrawModel()
 end
 
 -- ENT:DrawTranslucent - Do nothing --
@@ -33,27 +33,27 @@ function ENT:DrawTranslucent()
 end
 
 -- Usermessage 'sent_melon RecieveHP' --
-local function RecieveHP(UM)
-	local Ply = UM:ReadEntity()
-	local Melon = Ply:GetNetworkedEntity("Melon")
-	
+local function RecieveHP()
+	local Ply = net.ReadEntity()
+	local Melon = Ply:GetNWEntity("Melon")
+
 	if (Melon:IsValid()) then
 		-- Set the HP clientside so we can draw it on the HUD
-		local HP = UM:ReadFloat()
-		
+		local HP = net.ReadFloat()
+
 		Melon.HP = HP
-		Melon:SetNetworkedInt("HP", HP)
+		Melon:SetNWInt("HP", HP)
 	end
 end
-usermessage.Hook("sent_melon RecieveHP", RecieveHP)
+net.Receive("sent_melon_RecieveHP", RecieveHP)
 
 -- Usermessage 'sent_melon BombTimer' --
-local function BombTimer(UM)
-	local Ply = UM:ReadEntity()
-	local Melon = Ply:GetNetworkedEntity("Melon")
-	
+local function BombTimer()
+	local Ply = net.ReadEntity()
+	local Melon = Ply:GetNWEntity("Melon")
+
 	if (Melon:IsValid()) then
-		Melon.BombTimer = UM:ReadChar()
+		Melon.BombTimer = net.ReadUInt(8)
 	end
 end
-usermessage.Hook("sent_melon BombTimer", BombTimer)
+net.Receive("sent_melon_BombTimer", BombTimer)
